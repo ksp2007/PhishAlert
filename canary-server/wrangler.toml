@@ -1,0 +1,28 @@
+name = "phishalert-canary"
+main = "index.js"
+compatibility_date = "2024-09-23"
+
+# Two KV namespaces. Create them with:
+#   wrangler kv namespace create CANARY_KV
+#   wrangler kv namespace create EVENT_KV
+# then paste the ids Wrangler prints into the two entries below.
+
+kv_namespaces = [
+  { binding = "CANARY_KV", id = "ab6156fd03ec4e2995764807c62d22cf" },
+  { binding = "EVENT_KV",  id = "f9ab0130b26e4f8ba95fcabe67167810" }
+]
+
+# Optional: where a clicked decoy link redirects a visitor. If unset,
+# the worker returns a bland generic 404 instead (safer default — never
+# reveals that the link was a honeypot).
+# [vars]
+# SAFE_REDIRECT_URL = "https://example.com/security-notice"
+
+# NO secret is required. Each extension install registers itself and gets its
+# own private key automatically (POST /api/register) — users never see it.
+#
+# OPTIONAL: set an owner/admin key to view cross-user campaign data
+# (GET /api/campaign/:id). Only you would use this:
+#   wrangler secret put API_KEY
+# The public /t/:id and /c/:id endpoints require no auth by design —
+# they must be reachable by attacker infrastructure with no friction.

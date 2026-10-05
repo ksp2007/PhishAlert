@@ -1,0 +1,14 @@
+{
+  "name": "phishalert-canary",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PhishAlert Active Deception & Infrastructure Intelligence — Stage 1 capture endpoint",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": {
+    "wrangler": "^3.78.0"
+  }
+}

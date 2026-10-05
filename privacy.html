@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PhishAlert — Privacy Policy</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 15px/1.6 -apple-system, Segoe UI, Roboto, sans-serif; max-width: 780px; margin: 32px auto; padding: 0 20px; }
+  h1 { font-size: 26px; margin-bottom: 4px; }
+  h2 { font-size: 18px; margin-top: 28px; border-bottom: 1px solid #8884; padding-bottom: 4px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { border: 1px solid #8886; padding: 6px 9px; text-align: left; vertical-align: top; }
+  th { background: #8882; }
+  .note { background: #f59e0b22; border: 1px solid #f59e0b; padding: 10px 14px; border-radius: 8px; }
+  code { background: #8883; padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<h1>PhishAlert Privacy Policy</h1>
+<p>Version 2.5.0 · Last updated: 4 October 2026</p>
+<p class="note"><strong>Draft for the developer to review.</strong> Fill in every <em>[TODO]</em> (publisher name, contact address, date, governing law/region) and have it checked against your legal obligations before publishing. It describes what this version of the code actually does.</p>
+
+<h2>1. Who we are</h2>
+<p>PhishAlert is a browser extension that checks emails in Gmail, Outlook, Yahoo Mail and Proton Mail for signs of phishing. Publisher: [TODO: name]. Contact: [TODO: email address].</p>
+
+<h2>2. The short version</h2>
+<ul>
+  <li><strong>We run no servers that receive your email.</strong> PhishAlert has no account system and no analytics or advertising. The only server we operate is the optional canary service described in section 5, which never receives email content.</li>
+  <li><strong>Email subject, body and thread text are never sent anywhere unless you turn on “Send email content to Groq”</strong> (Settings → AI &amp; Privacy). It is off by default.</li>
+  <li>Automatic classification of every opened email is a second, separate switch, also off by default.</li>
+  <li>Email text is never written to disk. When AI is on it is kept in browser memory for at most 30 minutes.</li>
+</ul>
+
+<h2>3. AI features (Groq) — only if you opt in</h2>
+<p>If you switch on AI features and have added your own Groq API key, then when you use an AI tool (summary, tone check, “why dangerous”, draft reply, calendar/action/label extraction, coach, or chat) PhishAlert sends Groq Inc. the open email’s <strong>subject and body (first ~3,000 characters)</strong>; for thread-aware replies, <strong>earlier messages in the thread (up to ~800 characters each)</strong>; and, for chat/explanations, the scan result (sender domain, score, check results). The inbox digest and reports send scan-history entries (sender addresses, domains, threat labels). Requests go directly from your browser to <code>api.groq.com</code> using your key. Groq’s own terms and privacy policy govern what Groq does with that data; review them before enabling. If you turn on automatic classification, each email you open is sent without a click.</p>
+<p>Turning the switch off stops all of the above immediately and deletes any email text held in memory.</p>
+
+<h2>4. What is stored, where, and for how long</h2>
+<table>
+  <tr><th>Data</th><th>Where</th><th>Retention</th></tr>
+  <tr><td>Email subject, body, thread messages, AI summary of the open email</td><td>Browser memory only (<code>chrome.storage.session</code>), and only if AI is on</td><td>30 minutes, or until the browser closes, or until you turn AI off</td></tr>
+  <tr><td>Sender address and domain of the open email (no subject/body)</td><td>Browser memory only</td><td>30 minutes / browser close</td></tr>
+  <tr><td>Scan results and history (sender, domain, score, checks, threat labels), sender history, thread participants, campaign fingerprints, extracted indicators (links, IPs, attachment names)</td><td>On your device (<code>chrome.storage.local</code>)</td><td>Until you use Settings → wipe all data or uninstall. [TODO: add automatic retention limits if you want them]</td></tr>
+  <tr><td>Settings, whitelist/blocklist, API keys (encrypted with AES-GCM)</td><td>On your device</td><td>Until changed, wiped or uninstalled</td></tr>
+</table>
+<p>Versions before 2.5.0 saved email subject/body/thread text in local storage with no expiry. On update or startup this extension deletes those leftover entries.</p>
+
+<h2>5. Security look-ups that run without AI consent</h2>
+<p>To score senders and links PhishAlert contacts the services below. They receive <strong>domains or URLs, never the email subject or body</strong>, and some require a key you supply.</p>
+<table>
+  <tr><th>Service</th><th>What is sent</th></tr>
+  <tr><td>Google Public DNS (dns.google)</td><td>Sender/link domain names (SPF, DKIM, DMARC, MX, BIMI, blocklist queries)</td></tr>
+  <tr><td>rdap.org</td><td>Sender domain (domain-age lookup)</td></tr>
+  <tr><td>VirusTotal</td><td>Sender domain (needs your key)</td></tr>
+  <tr><td>URLhaus (abuse.ch)</td><td>Link URLs and hostnames; also the address of each page you open while Browsing Protection is on</td></tr>
+  <tr><td>Google Safe Browsing</td><td>Link URLs, and page addresses while Browsing Protection is on (needs your key)</td></tr>
+  <tr><td>PhishTank</td><td>Link URLs; also the address of each page you open while Browsing Protection is on (Settings)</td></tr>
+  <tr><td>OpenPhish</td><td>Nothing sent; the public feed is downloaded</td></tr>
+  <tr><td>unshorten.me</td><td>Shortened link URL, when you click to preview it</td></tr>
+  <tr><td>XposedOrNot</td><td>Sender domain, when you press “Check Breach History”</td></tr>
+  <tr><td>Link redirect-chain scanning (optional, separate permission)</td><td>Your browser requests the link URL itself to follow redirects</td></tr>
+  <tr><td>Canary service (operated by the publisher, https://phishalert-canary.phishalert-canary.workers.dev) — only when you press “Deploy Bait”</td><td>A randomly generated install key (stored on the server only as a hash), and for each canary you create: the sender’s domain, the scan identifier (the mail client’s message or thread ID from the page address, or the sender domain if none is available), a campaign identifier, the risk score and the bait type (pixel or link). <strong>No email subject, body or recipient data is sent.</strong> If a bait pixel or link is later opened by anyone, the server records that request’s IP address, network operator, country, User-Agent and timestamp — this describes the party that opened the bait, not you. Canaries and their hit records are deleted automatically after 30 days; an install key expires after about 13 months. Registration is rate-limited by IP address, and the IP is used only for that limit.</td></tr>
+</table>
+
+<h2>6. Your controls</h2>
+<ul>
+  <li>Settings → AI &amp; Privacy: turn AI features and automatic classification on or off.</li>
+  <li>Settings → wipe all data: removes everything the extension stores, including the key store.</li>
+  <li>Uninstalling the extension removes all locally stored data.</li>
+  <li>Requests about data held by third parties (Groq, VirusTotal, etc.) must go to those providers.</li>
+  <li>Canary data held on the publisher’s server expires automatically after 30 days; to have it removed sooner, use the contact address below.</li>
+</ul>
+
+<h2>7. Children, changes, contact</h2>
+<p>PhishAlert is not directed at children. If this policy changes, the version and date above will change and material changes will be noted in the extension’s release notes. Contact: [TODO: email address].</p>
+</body>
+</html>

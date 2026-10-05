@@ -1,0 +1,1371 @@
+/* PhishAlert v2 — Styles */
+
+/* ── Email Badge ────────────────────────────────────────────────────────── */
+.phishalert-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  line-height: 1;
+  margin-left: 5px;
+  margin-right: 2px;
+  cursor: pointer;
+  vertical-align: middle;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+  z-index: 1000;
+  flex-shrink: 0;
+}
+
+.phishalert-badge:hover { transform: scale(1.3); box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+
+.pa-badge-critical {
+  animation: pa-critical-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pa-critical-pulse {
+  0%,100% { transform: scale(1); filter: drop-shadow(0 0 0px #dc2626); }
+  50% { transform: scale(1.1); filter: drop-shadow(0 0 6px #dc2626); }
+}
+
+/* ── Badge group wrapper (trust-tier badge + optional first-time badge) ──── */
+.phishalert-badge-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  vertical-align: middle;
+}
+
+.phishalert-badge-firsttime {
+  width: 16px;
+  height: 16px;
+  background: #ecfeff;
+  border: 1px solid #a5f3fc;
+}
+
+.phishalert-badge-firsttime:hover { transform: scale(1.25); }
+
+.phishalert-loading { animation: pa-pulse 1.2s ease-in-out infinite; }
+
+@keyframes pa-pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%      { opacity:0.4; transform:scale(0.9); }
+}
+
+/* ── Inbox List Badge ───────────────────────────────────────────────────── */
+.phishalert-inbox-badge {
+  display: inline-block;
+  font-size: 12px;
+  line-height: 1;
+  margin-right: 4px;
+  vertical-align: middle;
+  cursor: default;
+  flex-shrink: 0;
+  /* FIX: removed `position: relative; z-index: 10;`. Same root pattern as
+     .pa-ai-tools-wrap and .pa-security-banner — this z-index let a badge
+     that ends up positioned under Gmail's sticky list toolbar (e.g. from a
+     hidden/off-screen bookkeeping row) paint on top of the toolbar instead
+     of staying behind it. Paired with the visibility guard in content.js
+     (isVisibleInboxRow), badges should no longer attach to non-visible rows
+     at all, but dropping the z-index here too means even a rare stray badge
+     can't cover real Gmail chrome. */
+  transition: transform 0.12s ease;
+  user-select: none;
+}
+
+.phishalert-inbox-badge:hover {
+  transform: scale(1.35);
+}
+
+.phishalert-inbox-badge-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  vertical-align: middle;
+}
+
+.phishalert-inbox-badge-firsttime {
+  transform: scale(0.85);
+}
+
+.phishalert-inbox-loading {
+  font-size: 7px;
+  color: #cbd5e1;
+  margin-right: 4px;
+  vertical-align: middle;
+  animation: pa-pulse 1.4s ease-in-out infinite;
+}
+
+/* ── Link Badges ─────────────────────────────────────────────────────────── */
+.pa-link-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 13px;
+  margin-left: 3px;
+  cursor: pointer;
+  vertical-align: middle;
+  border-radius: 4px;
+  padding: 1px 3px;
+  transition: transform 0.12s;
+  z-index: 999;
+}
+
+.pa-link-badge:hover { transform: scale(1.2); }
+.pa-link-warn { background: #fff7ed; border: 1px solid #fed7aa; }
+.pa-link-shortened { background: #eff6ff; border: 1px solid #bfdbfe; }
+.pa-link-critical { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; font-weight: bold; animation: pa-pulse 1.2s ease-in-out infinite; }
+@keyframes pa-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(220,38,38,0.4); } 50% { box-shadow: 0 0 0 4px rgba(220,38,38,0); } }
+
+/* ── Link Preview Panel ──────────────────────────────────────────────────── */
+.pa-link-preview {
+  position: absolute;
+  z-index: 99999;
+  width: 320px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+  font-family: 'Google Sans', Arial, sans-serif;
+  font-size: 12.5px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.1);
+  animation: pa-fadein 0.16s ease;
+}
+
+.pa-lp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 13px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.pa-lp-header.warn { background: #f59e0b; }
+.pa-lp-header.info { background: #3b82f6; }
+
+.pa-lp-body { padding: 12px 14px; }
+
+.pa-lp-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 8px;
+}
+
+.pa-lp-row span { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; }
+.pa-lp-row code {
+  font-size: 11px;
+  background: #f3f4f6;
+  padding: 4px 6px;
+  border-radius: 4px;
+  word-break: break-all;
+  color: #1f2937;
+  font-family: monospace;
+}
+
+.pa-lp-reason {
+  background: #fff7ed;
+  border-left: 3px solid #f59e0b;
+  padding: 6px 8px;
+  font-size: 11.5px;
+  color: #92400e;
+  border-radius: 0 5px 5px 0;
+  margin-bottom: 10px;
+}
+
+.pa-lp-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.pa-btn-danger {
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #b91c1c;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.pa-btn-danger:hover { background: #fecaca; }
+
+.pa-btn-proceed {
+  color: #6b7280;
+  font-size: 11.5px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ── Domain Detail Panel ────────────────────────────────────────────────── */
+.phishalert-panel {
+  position: absolute;
+  z-index: 99999;
+  width: 300px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.10);
+  font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
+  font-size: 12.5px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.08);
+  animation: pa-fadein 0.18s ease;
+}
+
+@keyframes pa-fadein {
+  from { opacity:0; transform:translateY(-6px) scale(0.97); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+
+.pa-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  color: #fff;
+}
+
+.pa-title { font-weight: 700; font-size: 14px; }
+
+.pa-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  opacity: 0.85;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+.pa-close:hover { opacity: 1; background: rgba(255,255,255,0.15); }
+
+.pa-panel-body { padding: 12px 14px 14px; }
+
+.pa-status { font-size: 14px; font-weight: 700; color: #1f2937; margin-bottom: 3px; }
+.pa-domain { font-size: 11.5px; color: #6b7280; margin-bottom: 10px; word-break: break-all; }
+
+/* Threats section */
+.pa-threats-section { margin-bottom: 10px; }
+
+.pa-threat {
+  background: #fff1f2;
+  border-left: 3px solid #f43f5e;
+  padding: 6px 8px;
+  border-radius: 0 6px 6px 0;
+  font-size: 11.5px;
+  color: #be123c;
+  margin-bottom: 5px;
+  line-height: 1.4;
+}
+
+.pa-section-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: #9ca3af;
+  margin-bottom: 6px;
+  margin-top: 6px;
+}
+
+.pa-checks { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+
+.pa-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #374151;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: #f9fafb;
+  border: 1px solid #f0f0f0;
+}
+
+.pa-check.pass  { border-left: 3px solid #22c55e; }
+.pa-check.fail  { border-left: 3px solid #ef4444; }
+.pa-check.neutral { border-left: 3px solid #94a3b8; }
+.pa-check.warn  { border-left: 3px solid #f59e0b; }
+
+.pa-check-detail {
+  margin-left: auto;
+  font-size: 10.5px;
+  color: #9ca3af;
+  text-align: right;
+  max-width: 170px;
+  line-height: 1.25;
+  white-space: normal;        /* wrap instead of cutting the reason off with "..." */
+  overflow-wrap: anywhere;
+}
+
+/* Report button */
+.pa-report-btn-row { margin-bottom: 8px; }
+
+.pa-report-btn {
+  width: 100%;
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  color: #92400e;
+  padding: 7px 12px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+.pa-report-btn:hover { background: #fde68a; }
+.pa-report-btn:disabled { opacity: 0.6; cursor: default; }
+
+.pa-warning {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 7px;
+  padding: 7px 10px;
+  font-size: 11.5px;
+  color: #c2410c;
+  line-height: 1.4;
+}
+
+/* ── Score Ring (detail panel) ─────────────────────────────────────────── */
+.pa-hero-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.pa-hero-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.pa-score-ring-wrap {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pa-score-ring-wrap svg {
+  position: absolute;
+  top: 0; left: 0;
+  transform: rotate(-90deg);
+}
+
+.pa-score-ring-label {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+  margin-top: -6px;
+}
+
+.pa-score-ring-sub {
+  position: absolute;
+  bottom: 10px;
+  font-size: 9px;
+  color: #9ca3af;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ── OpenClaw AI Tools Panel (injected into Gmail email view) ──────────────── */
+
+.pa-ai-tools-wrap {
+  margin: 8px 0 10px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  font-family: 'Google Sans', Arial, sans-serif;
+  font-size: 13px;
+  background: #fff;
+  /* FIX: this used to be `position: relative; z-index: 100;`. This banner
+     sits directly above the email body — exactly where Gmail's own native
+     "message details" popup (from/reply-to/to/date/... shown via the
+     "to me ▾" dropdown) overlays. Gmail's popup doesn't set its own high
+     z-index because nothing normally competes for that space. Giving this
+     banner an explicit z-index made it win the paint order and draw on top
+     of Gmail's popup, hiding its top rows. Nothing inside this banner (or
+     .pa-security-banner below) actually needs the elevated stacking — any
+     absolutely-positioned bits inside them (e.g. the score ring) form their
+     own local stacking context regardless — so it's removed here and the
+     equivalent unnecessary z-index is removed from .pa-security-banner too. */
+}
+
+.pa-ai-tools-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: linear-gradient(90deg, #1e3a8a, #2563eb);
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pa-ai-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.pa-ai-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.pa-ai-bar-logo { font-size: 16px; }
+
+.pa-ai-bar-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #bfdbfe;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pa-ai-cat-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.pa-ai-loading-tag {
+  background: rgba(255,255,255,0.15);
+  color: #bfdbfe;
+  animation: pa-pulse 1.4s ease-in-out infinite;
+}
+
+.pa-ai-cat-error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.pa-ai-priority-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+}
+
+.pa-ai-info-row {
+  padding: 6px 13px;
+  font-size: 12px;
+  color: #92400e;
+  background: #fffbeb;
+  border-bottom: 1px solid #fde68a;
+}
+
+.pa-ai-tool-btn {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  padding: 5px 11px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: background 0.14s;
+}
+
+.pa-ai-tool-btn:hover { background: rgba(255,255,255,0.28); }
+
+.pa-ai-collapse-btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 3px 5px;
+  border-radius: 4px;
+}
+
+.pa-ai-collapse-btn:hover { color: #fff; background: rgba(255,255,255,0.15); }
+
+/* Result / summary area */
+.pa-ai-result-area {
+  padding: 12px 14px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.pa-ai-summary-card {
+  font-size: 13px;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.pa-ai-summary-text { margin-bottom: 8px; color: #1f2937; }
+
+.pa-ai-subsection {
+  margin-top: 8px;
+}
+
+.pa-ai-subsection strong {
+  display: block;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.pa-ai-subsection ul {
+  padding-left: 16px;
+  margin: 0;
+}
+
+.pa-ai-subsection li { margin-bottom: 3px; font-size: 12.5px; }
+
+.pa-ai-deadline-row {
+  margin-top: 10px;
+  padding: 6px 9px;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #92400e;
+}
+
+/* Draft area */
+.pa-ai-draft-area {
+  padding: 12px 14px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.pa-ai-tone-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 9px;
+}
+
+.pa-ai-tone-label {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.pa-ai-tone-btn {
+  padding: 4px 11px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #374151;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  transition: all 0.13s;
+}
+
+.pa-ai-tone-btn.active {
+  background: #1e3a8a;
+  border-color: #1e3a8a;
+  color: #fff;
+}
+
+.pa-ai-tone-btn:hover:not(.active) { border-color: #3b82f6; color: #1d4ed8; }
+
+.pa-ai-generate-btn {
+  width: 100%;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 8px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: background 0.14s;
+  margin-bottom: 8px;
+}
+
+.pa-ai-generate-btn:hover { background: #1d4ed8; }
+
+.pa-ai-draft-output {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #1f2937;
+  line-height: 1.65;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 7px;
+}
+
+.pa-ai-draft-text { white-space: pre-wrap; word-break: break-word; }
+
+.pa-ai-copy-btn {
+  width: 100%;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+  padding: 7px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: background 0.14s;
+}
+
+.pa-ai-copy-btn:hover { background: #dcfce7; }
+
+/* Shared states */
+.pa-ai-loading {
+  color: #6b7280;
+  font-size: 12.5px;
+  text-align: center;
+  padding: 12px 0;
+  animation: pa-pulse 1.2s ease-in-out infinite;
+}
+
+.pa-ai-error {
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: 7px;
+  padding: 8px 10px;
+  color: #be123c;
+  font-size: 12px;
+}
+
+.pa-score-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+
+.pa-score-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+}
+
+.pa-score-bar-label {
+  width: 32px;
+  color: #6b7280;
+  font-size: 10.5px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.pa-score-bar-track {
+  flex: 1;
+  height: 5px;
+  background: #f3f4f6;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.pa-score-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.pa-score-bar-val {
+  width: 30px;
+  font-size: 10px;
+  font-weight: 600;
+  text-align: right;
+  flex-shrink: 0;
+}
+/* ── Phase 4: Security Findings Banner ──────────────────────────────────── */
+.pa-security-banner {
+  margin: 6px 0 10px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  font-family: 'Google Sans', Arial, sans-serif;
+  font-size: 12.5px;
+  background: #fff;
+  /* FIX: removed `position: relative; z-index: 90;` — same reason as
+     .pa-ai-tools-wrap above: it let this banner paint over Gmail's native
+     message-details popup instead of letting Gmail's own overlay render
+     on top as it normally would. */
+}
+
+.pa-sec-banner-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 12px;
+  background: linear-gradient(90deg, #1e3a8a, #1d4ed8);
+  color: #fff;
+}
+
+.pa-sec-banner-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #bfdbfe;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.pa-sec-banner-close {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+.pa-sec-banner-close:hover { color: #fff; background: rgba(255,255,255,0.15); }
+
+.pa-sec-banner-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.pa-sec-banner-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 8px 13px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 12.5px;
+}
+.pa-sec-banner-item:last-child { border-bottom: none; }
+
+.pa-sec-item-danger  { background: #fff1f2; border-left: 3px solid #dc2626; }
+.pa-sec-item-warn    { background: #fffbeb; border-left: 3px solid #d97706; }
+.pa-sec-item-info    { background: #eff6ff; border-left: 3px solid #2563eb; }
+.pa-sec-item-safe    { background: #f0fdf4; border-left: 3px solid #16a34a; }
+
+.pa-sec-item-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+.pa-sec-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pa-sec-item-label { font-weight: 600; color: #1f2937; }
+.pa-sec-item-detail { font-size: 11px; color: #6b7280; }
+
+/* ── Phase 4: Sender History Badge in Panel ─────────────────────────────── */
+.pa-sender-history-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: #f9fafb;
+  border: 1px solid #f0f0f0;
+  border-left: 3px solid #818cf8;
+  font-size: 12px;
+  color: #374151;
+  margin-bottom: 5px;
+}
+
+/* ── NEW FEATURE: Tone / Manipulation Analyzer (inline panel) ─────────────── */
+.pa-ai-tone-card { padding: 12px 13px; font-size: 12px; }
+.pa-ai-tone-risk {
+  font-size: 13px; font-weight: 700; margin-bottom: 6px;
+}
+.pa-ai-tone-summary {
+  color: #374151; line-height: 1.6; margin-bottom: 10px; font-size: 12.5px;
+}
+.pa-ai-tone-tactics { display: flex; flex-direction: column; gap: 7px; margin-bottom: 8px; }
+.pa-ai-tone-tactic {
+  border-radius: 7px; padding: 9px 11px;
+  border: 1px solid #e5e7eb;
+}
+.pa-ai-tone-tactic-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px;
+}
+.pa-ai-tone-label-badge { font-weight: 700; font-size: 12px; color: #1f2937; }
+.pa-ai-tone-sev {
+  font-size: 9.5px; font-weight: 700; letter-spacing: 0.5px;
+  padding: 2px 7px; border-radius: 10px;
+}
+.pa-ai-tone-sev-high   { background: #fee2e2; color: #991b1b; }
+.pa-ai-tone-sev-medium { background: #fef3c7; color: #92400e; }
+.pa-ai-tone-sev-low    { background: #d1fae5; color: #065f46; }
+.pa-ai-tone-evidence {
+  font-size: 11.5px; color: #6b7280; font-style: italic;
+  margin-bottom: 4px; border-left: 2px solid #d1d5db; padding-left: 7px;
+}
+.pa-ai-tone-why { font-size: 12px; color: #374151; line-height: 1.5; }
+.pa-ai-tone-safe {
+  padding: 11px; background: #f0fdf4; border: 1px solid #86efac;
+  border-radius: 7px; color: #15803d; font-size: 12.5px; text-align: center;
+}
+.pa-ai-tone-rec {
+  margin-top: 8px; padding: 8px 10px;
+  background: #eff6ff; border: 1px solid #93c5fd;
+  border-radius: 7px; color: #1d4ed8; font-size: 12px; line-height: 1.5;
+}
+
+/* ── NEW FEATURE: Phishing Plain-English Explanation (inline) ─────────────── */
+.pa-ai-explain-card {
+  padding: 13px; background: #fff7f7;
+  border: 1px solid #fca5a5; border-radius: 9px; margin: 6px 13px;
+}
+.pa-ai-explain-icon { font-size: 20px; text-align: center; margin-bottom: 6px; }
+.pa-ai-explain-text {
+  font-size: 13px; color: #1f2937; line-height: 1.75;
+}
+
+/* ── NEW FEATURE: Thread-aware toggle in draft area ───────────────────────── */
+.pa-ai-thread-row {
+  padding: 5px 13px 8px 13px;
+}
+.pa-ai-thread-label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: #4b5563; cursor: pointer;
+}
+.pa-ai-thread-label input { cursor: pointer; accent-color: #2563eb; }
+.pa-ai-thread-note {
+  font-size: 11px; color: #2563eb; padding: 4px 0 6px 0;
+  font-style: italic;
+}
+/* ── Block + Report button ───────────────────────────────────────────────── */
+.pa-report-btn-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.pa-report-btn { flex: 1; }
+.pa-block-btn {
+  flex: 1;
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+  padding: 7px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+.pa-block-btn:hover { background: #fca5a5; }
+.pa-block-btn:disabled { opacity: 0.6; cursor: default; }
+
+/* ── HIBP Breach Check ───────────────────────────────────────────────────── */
+/* ── HIBP Button ─────────────────────────────────────────────────────────── */
+.pa-hibp-row { margin-bottom: 6px; }
+.pa-hibp-btn {
+  width: 100%;
+  background: #ede9fe;
+  border: 1px solid #c4b5fd;
+  color: #5b21b6;
+  padding: 7px 12px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+.pa-hibp-btn:hover { background: #ddd6fe; }
+.pa-hibp-btn:disabled { opacity: 0.6; cursor: default; }
+
+/* ── HIBP Result Modal ───────────────────────────────────────────────────── */
+.pa-hibp-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  max-width: calc(100vw - 32px);
+  max-height: 80vh;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.22), 0 4px 12px rgba(0,0,0,.10);
+  z-index: 2147483647;
+  font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.pa-hibp-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 14px 16px;
+  flex-shrink: 0;
+}
+.pa-hibp-header-safe     { background: #f0fdf4; border-bottom: 1px solid #bbf7d0; }
+.pa-hibp-header-critical { background: #fef2f2; border-bottom: 1px solid #fecaca; }
+.pa-hibp-header-warn     { background: #fffbeb; border-bottom: 1px solid #fde68a; }
+
+.pa-hibp-modal-icon { font-size: 24px; flex-shrink: 0; }
+
+.pa-hibp-modal-title-wrap { flex: 1; min-width: 0; }
+.pa-hibp-modal-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: #0f172a;
+  letter-spacing: .1px;
+}
+.pa-hibp-modal-sub {
+  font-size: 11px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.pa-hibp-modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 17px;
+  color: #9ca3af;
+  padding: 2px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.pa-hibp-modal-close:hover { color: #374151; }
+
+/* Body */
+.pa-hibp-modal-body {
+  padding: 14px 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* State boxes */
+.pa-hibp-state-box {
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+.pa-hibp-state-safe     { background: #f0fdf4; border: 1px solid #bbf7d0; }
+.pa-hibp-state-critical { background: #fef2f2; border: 1px solid #fecaca; }
+.pa-hibp-state-warn     { background: #fffbeb; border: 1px solid #fde68a; }
+
+.pa-hibp-state-msg {
+  margin: 0 0 6px;
+  font-size: 13px;
+  color: #1f2937;
+  line-height: 1.5;
+}
+.pa-hibp-state-msg:last-child { margin-bottom: 0; }
+.pa-hibp-state-note {
+  margin: 0;
+  font-size: 11.5px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+/* Breach cards */
+.pa-hibp-breach-list { display: flex; flex-direction: column; gap: 8px; }
+.pa-hibp-breach-card {
+  background: #fff;
+  border: 1px solid #fecaca;
+  border-left: 4px solid #dc2626;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.pa-hibp-breach-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+.pa-hibp-breach-name {
+  font-weight: 700;
+  font-size: 13px;
+  color: #881337;
+}
+.pa-hibp-breach-date {
+  font-size: 11px;
+  color: #9f1239;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.pa-hibp-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.pa-hibp-tag {
+  font-size: 10.5px;
+  padding: 2px 7px;
+  background: #ffe4e6;
+  border: 1px solid #fecdd3;
+  border-radius: 4px;
+  color: #9f1239;
+  white-space: nowrap;
+}
+.pa-hibp-no-classes {
+  font-size: 11px;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* Footer */
+.pa-hibp-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 10px 16px;
+  border-top: 1px solid #f3f4f6;
+  background: #f9fafb;
+  flex-shrink: 0;
+}
+.pa-hibp-footer-btn {
+  padding: 7px 16px;
+  background: #1f2937;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: .2px;
+}
+.pa-hibp-footer-btn:hover { background: #111827; }
+.pa-hibp-footer-link {
+  font-size: 12px;
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+  margin-right: auto;
+}
+.pa-hibp-footer-link:hover { text-decoration: underline; }
+
+/* ── Blocked sender badge ────────────────────────────────────────────────── */
+.pa-blocked-banner {
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: #991b1b;
+  font-weight: 600;
+  margin-bottom: 7px;
+  text-align: center;
+}
+/* ═══════════════════════════════════════════════════════════════════════
+   PhishAlert v4.0 — Feature Additions CSS
+   APPEND THIS ENTIRE FILE to the bottom of your existing styles.css
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Feature 6: Inline Threat Banner (injected below email subject) ──── */
+.pa-inline-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  margin: 6px 0 10px 0;
+  font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  position: relative;
+  animation: pa-fadein 0.25s ease;
+  z-index: 100;
+  border: 1px solid transparent;
+}
+
+.pa-inline-banner-critical {
+  background: #fff1f2;
+  border-color: #fca5a5;
+  border-left: 4px solid #dc2626;
+  color: #991b1b;
+}
+
+.pa-inline-banner-suspicious {
+  background: #fffbeb;
+  border-color: #fde68a;
+  border-left: 4px solid #f59e0b;
+  color: #92400e;
+}
+
+.pa-inline-banner-safe {
+  background: #f0fdf4;
+  border-color: #86efac;
+  border-left: 4px solid #22c55e;
+  color: #15803d;
+}
+
+.pa-inline-banner-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.pa-inline-banner-text { flex: 1; min-width: 0; }
+
+.pa-inline-banner-title {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.pa-inline-banner-detail {
+  font-size: 11.5px;
+  opacity: 0.8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pa-inline-banner-trust {
+  background: none;
+  border: 1px solid currentColor;
+  font-size: 10.5px;
+  cursor: pointer;
+  opacity: 0.75;
+  padding: 3px 8px;
+  border-radius: 5px;
+  flex-shrink: 0;
+  color: inherit;
+  font-family: inherit;
+  font-weight: 600;
+  transition: opacity 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+.pa-inline-banner-trust:hover { opacity: 1; background: rgba(0,0,0,0.07); }
+
+.pa-inline-banner-close {
+  background: none;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  opacity: 0.55;
+  padding: 2px 5px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  color: inherit;
+  line-height: 1;
+  transition: opacity 0.15s;
+}
+.pa-inline-banner-close:hover { opacity: 1; background: rgba(0,0,0,0.07); }
+
+/* ── Feature 2: Keyboard Shortcut Toast Notification ────────────────── */
+.pa-toast {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 2147483647;
+  min-width: 270px;
+  max-width: 380px;
+  background: #111827;
+  color: #e5e7eb;
+  border-radius: 14px;
+  padding: 13px 17px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.40), 0 2px 8px rgba(0,0,0,0.20);
+  font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  animation: pa-toast-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+@keyframes pa-toast-in {
+  from { opacity: 0; transform: translateY(24px) scale(0.88); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.pa-toast-out {
+  animation: pa-toast-out 0.28s ease forwards !important;
+}
+
+@keyframes pa-toast-out {
+  to { opacity: 0; transform: translateY(10px) scale(0.95); }
+}
+
+.pa-toast-icon {
+  font-size: 26px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.pa-toast-body { flex: 1; }
+.pa-toast-title {
+  font-weight: 800;
+  font-size: 14px;
+  margin-bottom: 3px;
+  color: #f9fafb;
+}
+.pa-toast-detail {
+  font-size: 12px;
+  opacity: 0.65;
+  font-family: 'Courier New', monospace;
+}
+
+.pa-toast-score {
+  font-size: 22px;
+  font-weight: 900;
+  flex-shrink: 0;
+  padding: 5px 10px;
+  border-radius: 9px;
+  font-family: 'Courier New', monospace;
+  line-height: 1;
+}
+.pa-toast-score-safe    { background: rgba(34,197,94,0.18);  color: #4ade80; }
+.pa-toast-score-warn    { background: rgba(245,158,11,0.18); color: #fbbf24; }
+.pa-toast-score-danger  { background: rgba(239,68,68,0.18);  color: #f87171; }
+
+.pa-toast-kbd-hint {
+  position: absolute;
+  bottom: -20px;
+  right: 14px;
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+  font-family: monospace;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PhishAlert v5.0 — Additional Styles
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Multi-client banners (Outlook / Yahoo / ProtonMail) ──────────────── */
+.pa-owa-banner, .pa-yahoo-banner, .pa-proton-banner {
+  font-family: -apple-system, 'Segoe UI', Arial, sans-serif;
+  animation: pa-fadein 0.25s ease;
+  z-index: 9999;
+  position: relative;
+}
+
+/* ── Redirect chain viewer in Checker tab ─────────────────────────────── */
+.pa-chain-hop {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 5px 0;
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--text2);
+  word-break: break-all;
+}
+
+.pa-chain-hop-malicious {
+  color: var(--red2);
+  font-weight: 700;
+}
+
+.pa-urlhaus-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: rgba(239,68,68,.12);
+  color: var(--red2);
+  border: 1px solid rgba(239,68,68,.3);
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.pa-urlhaus-clean {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: rgba(34,197,94,.1);
+  color: var(--green2);
+  border: 1px solid rgba(34,197,94,.25);
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* ── Outgoing warning overlay ─────────────────────────────────────────── */
+#pa-outgoing-overlay {
+  font-family: -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* ── OAuth alert panel ────────────────────────────────────────────────── */
+#pa-oauth-alert-wrap {
+  animation: pa-fadein 0.3s ease;
+}
+
+/* ── Client status grid in overview ──────────────────────────────────── */
+#pa-client-status .section-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text3);
+}
+
+/* ── Score Deductions Panel (why is the score lower than 100?) ─────────── */
+.pa-deductions-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+  border: 1px solid #fecaca;
+  border-radius: 7px;
+  background: #fff5f5;
+  overflow: hidden;
+}
+
+.pa-deduction-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 9px;
+  border-bottom: 1px solid #fee2e2;
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.pa-deduction-row:last-child { border-bottom: none; }
+
+.pa-deduction-icon {
+  font-size: 13px;
+  flex-shrink: 0;
+  width: 18px;
+  text-align: center;
+}
+
+.pa-deduction-label {
+  flex: 1;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.pa-deduction-pts {
+  font-weight: 700;
+  font-size: 11.5px;
+  flex-shrink: 0;
+  min-width: 26px;
+  text-align: right;
+}
+
+.pa-deduction-row.penalty .pa-deduction-label { color: #7f1d1d; }
+.pa-deduction-row.penalty .pa-deduction-pts { color: #dc2626; }
+
+.pa-deduction-row.bonus .pa-deduction-label { color: #14532d; }
+.pa-deduction-row.bonus .pa-deduction-pts { color: #16a34a; }
+.pa-auth-source { font-size: 10.5px; margin: 0 0 6px; padding: 4px 8px; border-radius: 6px; line-height: 1.3; }
+.pa-auth-source.ok  { color: #166534; background: #f0fdf4; }
+.pa-auth-source.dns { color: #92400e; background: #fffbeb; }
